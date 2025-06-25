@@ -1,6 +1,9 @@
 # ElevateLabs_Task2
 This project is built as part of **ElevateLabs Task 2**, focused on mastering essential SQL operations such as inserting, updating, and deleting data in a relational **Library Management System** database. The script also handles missing values using `NULL` and demonstrates data cleanup for maintaining consistency.
 
+This project is built as part of **ElevateLabs Task 2**, focused on mastering essential SQL operations such as inserting, updating, and deleting data in a relational **Library Management System** database. The script also handles missing values using `NULL` and demonstrates data cleanup for maintaining consistency.
+
+
 ## 🎯 Objective
 
 Practice inserting, updating, and deleting data. Handle missing values using `NULL` and ensure clean and consistent data in a relational database.
