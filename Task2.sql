@@ -1,89 +1,112 @@
-CREATE DATABASE IF NOT EXISTS LibraryDB;
-USE LibraryDB;
+CREATE DATABASE EcommerceDB2;
+USE EcommerceDB2;   
 
-DROP TABLE IF EXISTS Payments;
-DROP TABLE IF EXISTS Loans;
-DROP TABLE IF EXISTS Books;
-DROP TABLE IF EXISTS Authors;
-DROP TABLE IF EXISTS Members;
+DROP TABLE IF EXISTS Payments;                                                                                                                                                                                                    DROP TABLE IF EXISTS Payments;
+DROP TABLE IF EXISTS Order_Items;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Customers;
 
-CREATE TABLE Members (
-    member_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     phone VARCHAR(15),
     address TEXT
 );
 
-CREATE TABLE Authors (
-    author_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
-    bio TEXT
-);
-
-CREATE TABLE Books (
-    book_id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(150),
-    author_id INT,
     description TEXT,
-    published_year INT,
-    stock_quantity INT,
-    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+    price DECIMAL(10, 2),
+    stock_quantity INT
 );
 
-CREATE TABLE Loans (
-    loan_id INT PRIMARY KEY AUTO_INCREMENT,
-    member_id INT,
-    book_id INT,
-    loan_date DATE,
-    return_date DATE,
-    FOREIGN KEY (member_id) REFERENCES Members(member_id),
-    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    order_date DATE,
+    total_amount DECIMAL(10, 2),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+CREATE TABLE Order_Items (
+    order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    price_at_purchase DECIMAL(10, 2),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
 CREATE TABLE Payments (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
-    loan_id INT,
+    order_id INT,
     payment_date DATE,
     amount_paid DECIMAL(10, 2),
     payment_method VARCHAR(50),
-    FOREIGN KEY (loan_id) REFERENCES Loans(loan_id)
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
 );
 
-INSERT INTO Members (name, email, phone, address) VALUES 
+INSERT INTO Customers (name, email, phone, address) VALUES 
 ('Alice Sharma', 'alice@example.com', '9876543210', 'Delhi'),
 ('Bob Verma', 'bob@example.com', NULL, 'Mumbai'),
 ('Charlie Khan', NULL, '9998887776', 'Bangalore'),
 ('Daisy Roy', 'daisy@example.com', '8889990000', NULL);
 
-INSERT INTO Authors (name, bio) VALUES 
-('R.K. Narayan', 'Famous Indian novelist'),
-('George Orwell', NULL),
-('J.K. Rowling', 'Author of Harry Potter series');
+INSERT INTO Products (name, description, price, stock_quantity) VALUES 
+('Laptop', '15-inch screen, 8GB RAM', 55000.00, 10),
+('Smartphone', '128GB, 5G-enabled', 25000.00, 0),
+('Headphones', NULL, 1500.00, 50),
+('Wireless Mouse', 'Ergonomic design', 800.00, 20);
 
-INSERT INTO Books (title, author_id, description, published_year, stock_quantity) VALUES 
-('Malgudi Days', 1, 'Short stories set in fictional town Malgudi', 1943, 5),
-('1984', 2, NULL, 1949, 3),
-('Harry Potter', 3, 'Wizarding world adventures', 1997, 10),
-('Animal Farm', 2, 'Political satire', 1945, 4);
+INSERT INTO Orders (customer_id, order_date, total_amount) VALUES
+(1, '2024-06-15', 80000.00),
+(2, '2024-06-16', 25000.00),
+(3, '2024-06-17', NULL);
 
-INSERT INTO Loans (member_id, book_id, loan_date, return_date) VALUES
-(1, 1, '2024-06-10', '2024-06-20'),
-(2, 2, '2024-06-11', NULL),
-(3, 4, '2024-06-12', '2024-06-22');
+INSERT INTO Order_Items (order_id, product_id, quantity, price_at_purchase) VALUES
+(1, 1, 1, 55000.00),
+(1, 3, 2, 1500.00),
+(2, 2, 1, 25000.00),
+(3, 4, 1, 800.00);
 
-INSERT INTO Payments (loan_id, payment_date, amount_paid, payment_method) VALUES
-(1, '2024-06-15', 50.00, 'Cash'),
+INSERT INTO Payments (order_id, payment_date, amount_paid, payment_method) VALUES
+(1, '2024-06-15', 58000.00, 'Credit Card'),
 (2, '2024-06-16', NULL, 'UPI'),
-(3, '2024-06-17', 30.00, NULL);
+(3, '2024-06-17', 800.00, NULL);
 
-UPDATE Members SET phone = '9123456789' WHERE member_id = 2 AND phone IS NULL;
-UPDATE Members SET email = 'charlie.khan@example.com' WHERE member_id = 3 AND email IS NULL;
-UPDATE Books SET description = 'Dystopian political novel' WHERE book_id = 2 AND description IS NULL;
-UPDATE Payments SET amount_paid = 40.00 WHERE payment_id = 2 AND amount_paid IS NULL;
-UPDATE Payments SET payment_method = 'Card' WHERE payment_id = 3 AND payment_method IS NULL;
+UPDATE Customers
+SET phone = '9123456789'
+WHERE customer_id = 2 AND phone IS NULL;
 
-DELETE FROM Loans WHERE loan_id = 3;
-DELETE FROM Payments WHERE loan_id = 3;
-DELETE FROM Members WHERE member_id = 3 AND email IS NULL;
-DELETE FROM Books WHERE book_id = 2 AND stock_quantity IS NULL;
+UPDATE Customers
+SET email = 'charlie.khan@example.com'
+WHERE customer_id = 3 AND email IS NULL;
+
+UPDATE Orders
+SET total_amount = 800.00
+WHERE order_id = 3 AND total_amount IS NULL;
+
+UPDATE Products
+SET description = 'Basic over-ear headphones'
+WHERE product_id = 3 AND description IS NULL;
+
+UPDATE Payments
+SET amount_paid = 25000.00
+WHERE payment_id = 2 AND amount_paid IS NULL;
+
+UPDATE Payments
+SET payment_method = 'Cash'
+WHERE payment_id = 3 AND payment_method IS NULL;
+
+DELETE FROM Orders
+WHERE order_id = 3 AND total_amount IS NULL;
+
+DELETE FROM Customers
+WHERE customer_id = 3 AND email IS NULL;
+
+DELETE FROM Products
+WHERE product_id = 2 AND stock_quantity = 0;
