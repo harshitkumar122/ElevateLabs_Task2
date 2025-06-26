@@ -1,60 +1,74 @@
 # ElevateLabs_Task2
+This project is part of ElevateLabs Task 2, aimed at mastering essential SQL operations like inserting, updating, and deleting data. It also covers handling missing values using NULL and demonstrates data cleanup for maintaining data consistency in an e-commerce database.
 
-This project is built as part of **ElevateLabs Task 2**, focused on mastering essential SQL operations such as inserting, updating, and deleting data and database. The script also handles missing values using `NULL` and demonstrates data cleanup for maintaining consistency.
+🎯 Objective
+Practice inserting, updating, and deleting data.
 
+Handle missing values using NULL.
 
-## 🎯 Objective
+Ensure clean and consistent data in a normalized database.
 
-Practice inserting, updating, and deleting data. Handle missing values using `NULL` and ensure clean and consistent data in a relational database.
+🛠 Tools Used
+MySQL Workbench 
 
-## 🛠️ Tools
+📂 Deliverables
+✅ EcommerceDB2.sql containing:
 
-- MySQL Workbench
+Table creation with PRIMARY KEY and FOREIGN KEY constraints
 
-## 📦 Deliverables
+INSERT statements with sample e-commerce data
 
-- ✅ `LibraryDB.sql` file containing:
-  - Table creation with `PRIMARY KEY` and `FOREIGN KEY` constraints
-  - `INSERT` statements to populate tables with sample data
-  - `UPDATE` statements to handle missing (`NULL`) values
-  - `DELETE` statements to remove incomplete or inconsistent data
+UPDATE statements to fix NULL values
 
-## 📘 Guide
+DELETE statements to remove incomplete/inconsistent data
 
-1. Use `INSERT INTO` to add rows into all major tables
-2. Introduce missing values (`NULL`) in specific fields (email, bio, return_date)
-3. Use `UPDATE` to fill in missing values using conditions
-4. Use `DELETE` with `WHERE` clauses to clean unwanted rows
-5. Ensure referential integrity by maintaining foreign key relationships
+📘 Guide
+Create the database and all necessary tables.
 
-## 🧱 Schema Overview
+Populate the tables with sample e-commerce data.
 
-The database contains the following tables:
+Identify and handle NULL values using UPDATE statements.
 
-- `Members`: Library users
-- `Authors`: Book authors
-- `Books`: Books with stock and authorship info
-- `Loans`: Borrowed book records
-- `Payments`: Fines or dues linked to loans
+Remove incomplete records using DELETE.
 
-Relationships are maintained through foreign keys:
-- `Books.author_id → Authors.author_id`
-- `Loans.member_id → Members.member_id`
-- `Loans.book_id → Books.book_id`
-- `Payments.loan_id → Loans.loan_id`
+Maintain referential integrity with FOREIGN KEY constraints.
 
-## 🧹 NULL Handling and Data Cleanup
+🗂 Schema Overview
+The project includes the following tables:
 
-**NULL Values Inserted In:**
-- `phone` and `email` in `Members`
-- `bio` in `Authors`
-- `description` in `Books`
-- `amount_paid` and `payment_method` in `Payments`
-- `return_date` in `Loans`
+Customers – Customer details
 
-**Corrected With:**
-- `UPDATE` for filling in missing values
-- `DELETE` to remove records with incomplete data
+Products – Product data
+
+Orders – Order records and total amount
+
+Order_Items – Products linked to each order
+
+Payments – Payment details per order
+
+🔗 Relationships:
+Orders.customer_id → Customers.customer_id
+
+Order_Items.order_id → Orders.order_id
+
+Order_Items.product_id → Products.product_id
+
+Payments.order_id → Orders.order_id
+
+🚫 NULL Handling and Cleanup
+Detected NULL values in:
+Customers.phone, Customers.email
+
+Products.description
+
+Orders.total_amount
+
+Payments.amount_paid, Payments.payment_method
+
+Resolved via:
+UPDATE for filling in missing data
+
+DELETE for removing incomplete entries
 
 ## ✅ Outcome
 
